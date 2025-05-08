@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:background="@drawable/gradient"
+    android:elevation="2dp">
+
+    <TextView
+        android:id="@+id/txtMedicationName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="Medication Name"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtStockLevel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="Stock: 0"
+        android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/btnDecreaseStock"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:text="-"
+        android:backgroundTint="@color/white"
+        android:background="@drawable/ic_remove"/>
+
+    <Button
+        android:id="@+id/btnIncreaseStock"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:text="+"
+        android:backgroundTint="@color/white"
+        android:background="@drawable/ic_add" />
+
+    <Button
+        android:id="@+id/btnDelete"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:text="X"
+        android:backgroundTint="@color/white"
+        android:background="@drawable/ic_delete" />
+</LinearLayout>

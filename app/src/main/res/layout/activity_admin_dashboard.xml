@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:gravity="center"
+        android:background="@drawable/gradient">
+
+        <!-- Admin Title -->
+        <TextView
+            android:id="@+id/tvAdminTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Admin Dashboard"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            android:textAlignment="center"/>
+
+        <!-- Centered GridLayout -->
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:layout_marginTop="20dp"
+            android:padding="8dp"
+            android:rowCount="5"
+            android:layout_gravity="center">
+
+            <!-- Medication Schedule -->
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Medication Schedule"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:gravity="center"
+                    android:textAlignment="center"/>
+                <ImageButton
+                    android:id="@+id/btnMedication"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:src="@drawable/iconmedication"
+                    android:contentDescription="Medication Schedule"
+                    android:background="?attr/selectableItemBackground"
+                    android:scaleType="fitCenter"
+                    android:padding="10dp"
+                    android:layout_margin="12dp"/>
+            </LinearLayout>
+
+            <!-- Alarm Notifications -->
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Alarm Notifications"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:gravity="center"
+                    android:textAlignment="center"/>
+                <ImageButton
+                    android:id="@+id/btnAlarm"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:src="@drawable/iconalarm"
+                    android:contentDescription="Alarm Notifications"
+                    android:background="?attr/selectableItemBackground"
+                    android:scaleType="fitCenter"
+                    android:padding="10dp"
+                    android:layout_margin="12dp"/>
+            </LinearLayout>
+
+            <!-- Inventory Management -->
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Inventory Management"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:gravity="center"
+                    android:textAlignment="center"/>
+                <ImageButton
+                    android:id="@+id/btnInventory"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:src="@drawable/icinventory"
+                    android:contentDescription="Inventory Management"
+                    android:background="?attr/selectableItemBackground"
+                    android:scaleType="fitCenter"
+                    android:padding="10dp"
+                    android:layout_margin="12dp"/>
+            </LinearLayout>
+
+            <!-- GPS Tracking & Geofencing -->
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="GPS Tracking Geofencing"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:gravity="center"
+                    android:textAlignment="center"/>
+                <ImageButton
+                    android:id="@+id/btnGPS"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:src="@drawable/icgps"
+                    android:contentDescription="GPS Tracking Geofencing"
+                    android:background="?attr/selectableItemBackground"
+                    android:scaleType="fitCenter"
+                    android:padding="10dp"
+                    android:layout_margin="12dp"/>
+            </LinearLayout>
+
+            <!-- User Profiles -->
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="User Profiles"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:gravity="center"
+                    android:textAlignment="center"/>
+                <ImageButton
+                    android:id="@+id/btnUser"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:src="@drawable/icusers"
+                    android:contentDescription="User Profiles"
+                    android:background="?attr/selectableItemBackground"
+                    android:scaleType="fitCenter"
+                    android:padding="10dp"
+                    android:layout_margin="12dp"/>
+            </LinearLayout>
+
+            <!-- Reports & Analytics -->
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Reports  Analytics"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:gravity="center"
+                    android:textAlignment="center"/>
+                <ImageButton
+                    android:id="@+id/btnReports"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:src="@drawable/icreports"
+                    android:contentDescription="Reports Analytics"
+                    android:background="?attr/selectableItemBackground"
+                    android:scaleType="fitCenter"
+                    android:padding="10dp"
+                    android:layout_margin="12dp"/>
+            </LinearLayout>
+
+            <!-- Settings -->
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Settings"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:gravity="center"
+                    android:textAlignment="center"/>
+                <ImageButton
+                    android:id="@+id/btnSettings"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:src="@drawable/icsettings"
+                    android:contentDescription="Settings"
+                    android:background="?attr/selectableItemBackground"
+                    android:scaleType="fitCenter"
+                    android:padding="10dp"
+                    android:layout_margin="12dp"/>
+            </LinearLayout>
+        </GridLayout>
+
+        <!-- Logout Button (Centered) -->
+        <Button
+            android:id="@+id/btnLogoutAdmin"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="Log Out"
+            android:backgroundTint="@android:color/holo_red_dark"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+</ScrollView>

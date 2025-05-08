@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "44040188936",
+    "project_id": "medalertbox-ee8ee",
+    "storage_bucket": "medalertbox-ee8ee.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:44040188936:android:8c2ab74bff9a2f1a334dbd",
+        "android_client_info": {
+          "package_name": "com.app.medalertbox"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZhSlFkmE4zpq5tZeZE8qQCmgcZNVAvTE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

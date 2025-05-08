@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:gravity="center"
+        android:background="@drawable/gradient">
+
+        <!-- Caregiver Title -->
+        <TextView
+            android:id="@+id/tvCaregiverTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Caregiver Dashboard"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"/>
+
+        <!-- GridLayout for ImageButtons (2 Columns) -->
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:layout_marginTop="20dp"
+            android:padding="8dp"
+            android:gravity="center">
+
+            <!-- Medication Schedule -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_margin="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Medication Schedule"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:gravity="center"
+                    android:layout_gravity="center"/>
+
+                <ImageButton
+                    android:id="@+id/btnMedication"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:src="@drawable/iconmedication"
+                    android:contentDescription="Medication Schedule"
+                    android:background="?attr/selectableItemBackground"
+                    android:scaleType="fitCenter"
+                    android:padding="10dp"/>
+            </LinearLayout>
+
+            <!-- Alarm & Notifications -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_margin="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Alarm Notifications"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:gravity="center"
+                    android:layout_gravity="center"/>
+
+                <ImageButton
+                    android:id="@+id/btnAlarm"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:src="@drawable/iconalarm"
+                    android:contentDescription="Alarm Notifications"
+                    android:background="?attr/selectableItemBackground"
+                    android:scaleType="fitCenter"
+                    android:padding="10dp"/>
+            </LinearLayout>
+
+            <!-- GPS Tracking & Geofencing -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_margin="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="GPS Tracking Geofencing"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:gravity="center"
+                    android:layout_gravity="center"/>
+
+                <ImageButton
+                    android:id="@+id/btnGPS"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:src="@drawable/icgps"
+                    android:contentDescription="GPS Tracking Geofencing"
+                    android:background="?attr/selectableItemBackground"
+                    android:scaleType="fitCenter"
+                    android:padding="10dp"/>
+            </LinearLayout>
+
+            <!-- Reports & Analytics -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_margin="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Reports  Analytics"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:gravity="center"
+                    android:layout_gravity="center"/>
+
+                <ImageButton
+                    android:id="@+id/btnReports"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:src="@drawable/icreports"
+                    android:contentDescription="Reports Analytics"
+                    android:background="?attr/selectableItemBackground"
+                    android:scaleType="fitCenter"
+                    android:padding="10dp"/>
+            </LinearLayout>
+
+            <!-- Help & Support -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_margin="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Help Support"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:gravity="center"
+                    android:layout_gravity="center"/>
+
+                <ImageButton
+                    android:id="@+id/btnHelp"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:src="@drawable/ichelp"
+                    android:contentDescription="Help Support"
+                    android:background="?attr/selectableItemBackground"
+                    android:scaleType="fitCenter"
+                    android:padding="10dp"/>
+            </LinearLayout>
+
+        </GridLayout>
+
+        <!-- Logout Button -->
+        <Button
+            android:id="@+id/btnLogoutCaregiver"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="Log Out"
+            android:backgroundTint="@android:color/holo_red_dark"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+</ScrollView>
