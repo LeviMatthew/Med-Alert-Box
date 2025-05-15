@@ -9,11 +9,15 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.app.medalertbox.databinding.ActivitySettingsBinding
 import com.app.medalertbox.settings.ChangePasswordActivity
 import com.app.medalertbox.settings.PrivacySettingsActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class SettingsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySettingsBinding
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var db: FirebaseFirestore
+    private lateinit var auth: FirebaseAuth
 
     companion object {
         private const val PREFS_NAME = "settings"
@@ -28,11 +32,14 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+        db = FirebaseFirestore.getInstance()
+        auth = FirebaseAuth.getInstance()
 
         setupNavigationButtons()
         setupNotificationToggle()
         setupThemeToggle()
-        setupAlarmSoundToggle() // New method
+        setupAlarmSoundToggle()
+        validateUserRole()
     }
 
     private fun setupNavigationButtons() {
@@ -69,10 +76,8 @@ class SettingsActivity : AppCompatActivity() {
             sharedPreferences.edit().putBoolean(KEY_DARK_THEME, isChecked).apply()
 
             AppCompatDelegate.setDefaultNightMode(
-                if (isChecked)
-                    AppCompatDelegate.MODE_NIGHT_YES
-                else
-                    AppCompatDelegate.MODE_NIGHT_NO
+                if (isChecked) AppCompatDelegate.MODE_NIGHT_YES
+                else AppCompatDelegate.MODE_NIGHT_NO
             )
 
             val message = if (isChecked) "Dark Theme Enabled" else "Dark Theme Disabled"
@@ -81,20 +86,36 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun setupAlarmSoundToggle() {
-        // Fetch alarm sound preference from SharedPreferences
         val alarmSoundsEnabled = sharedPreferences.getBoolean(KEY_ALARM_SOUNDS_ENABLED, true)
-
-        // Set the state of the SwitchCompat widget to match the preference
         binding.switchAlarmSound.isChecked = alarmSoundsEnabled
 
-        // Set a listener to update SharedPreferences when the user toggles the switch
         binding.switchAlarmSound.setOnCheckedChangeListener { _, isChecked ->
-            // Save the new preference to SharedPreferences
             sharedPreferences.edit().putBoolean(KEY_ALARM_SOUNDS_ENABLED, isChecked).apply()
-
-            // Show a toast to confirm the action
             val message = if (isChecked) "Alarm Sounds Enabled" else "Alarm Sounds Disabled"
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun validateUserRole() {
+        val userId = auth.currentUser?.uid
+        if (userId.isNullOrEmpty()) {
+            Toast.makeText(this, "User not logged in.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        db.collection("users").document(userId).get()
+            .addOnSuccessListener { document ->
+                if (document != null && document.exists()) {
+                    val role = document.getString("role") ?: "Unknown"
+                    if (role == "Unknown") {
+                        Toast.makeText(this, "Unknown role. Contact support.", Toast.LENGTH_LONG).show()
+                    }
+                } else {
+                    Toast.makeText(this, "User data not found in Firestore.", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Failed to load user role: ${it.localizedMessage}", Toast.LENGTH_SHORT).show()
+            }
     }
 }

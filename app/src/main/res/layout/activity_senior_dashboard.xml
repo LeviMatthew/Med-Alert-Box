@@ -11,7 +11,7 @@
         android:orientation="vertical"
         android:padding="16dp"
         android:gravity="center"
-        android:background="@drawable/gradient">
+        android:background="@drawable/medalertboxbacground">
 
         <!-- Senior Title -->
         <TextView
@@ -42,15 +42,6 @@
                 android:gravity="center"
                 android:layout_margin="12dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Medication Schedule"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/black"
-                    android:gravity="center"
-                    android:layout_gravity="center"/>
-
                 <ImageButton
                     android:id="@+id/btnMedication"
                     android:layout_width="140dp"
@@ -60,6 +51,15 @@
                     android:background="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     android:padding="10dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Medication Schedule"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:gravity="center"
+                    android:layout_gravity="center"/>
             </LinearLayout>
 
             <!-- Alarm & Notifications -->
@@ -70,15 +70,6 @@
                 android:gravity="center"
                 android:layout_margin="12dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Alarm Notifications"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/black"
-                    android:gravity="center"
-                    android:layout_gravity="center"/>
-
                 <ImageButton
                     android:id="@+id/btnAlarm"
                     android:layout_width="140dp"
@@ -88,8 +79,16 @@
                     android:background="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     android:padding="10dp"/>
-            </LinearLayout>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Alarm Notifications"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:gravity="center"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
 
             <!-- User Profile -->
             <LinearLayout
@@ -98,15 +97,6 @@
                 android:orientation="vertical"
                 android:gravity="center"
                 android:layout_margin="12dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="User Profile"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/black"
-                    android:gravity="center"
-                    android:layout_gravity="center"/>
 
                 <ImageButton
                     android:id="@+id/btnUserProfile"
@@ -117,6 +107,15 @@
                     android:background="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     android:padding="10dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="User Profile"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:gravity="center"
+                    android:layout_gravity="center"/>
             </LinearLayout>
 
             <!-- Help & Support -->
@@ -127,15 +126,6 @@
                 android:gravity="center"
                 android:layout_margin="12dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Help Support"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/black"
-                    android:gravity="center"
-                    android:layout_gravity="center"/>
-
                 <ImageButton
                     android:id="@+id/btnHelp"
                     android:layout_width="140dp"
@@ -145,6 +135,15 @@
                     android:background="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     android:padding="10dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Help Support"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:gravity="center"
+                    android:layout_gravity="center"/>
             </LinearLayout>
 
         </GridLayout>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_patient_profile"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/medalertboxbacground"
+    tools:context=".PatientProfileActivity">
+
+    <!-- Back Button -->
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="16dp"
+        android:layout_alignParentStart="true"
+        android:background="@android:color/transparent"
+        android:src="@drawable/back"
+        android:contentDescription="Back" />
+
+    <!-- Profile Icon -->
+    <ImageView
+        android:id="@+id/imgProfile"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/icusers"
+        android:contentDescription="Profile Picture" />
+
+    <!-- Patient Name -->
+    <TextView
+        android:id="@+id/tvPatientName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imgProfile"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="4dp"
+        android:text="PATIENT NAME"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black" />
+
+    <!-- Patient Number -->
+    <TextView
+        android:id="@+id/patientNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvPatientName"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
+        android:text="PATIENT Number"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black" />
+
+    <!-- Button Section -->
+    <LinearLayout
+        android:id="@+id/layoutButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/patientNumber"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/btnPatientInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:text="PATIENT'S INFORMATION"
+            android:backgroundTint="@color/light_blue"
+            android:textColor="@android:color/black" />
+
+        <Button
+            android:id="@+id/btnPatientRelative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:text="PATIENT'S RELATIVE"
+            android:backgroundTint="@color/light_blue"
+            android:textColor="@android:color/black" />
+
+        <Button
+            android:id="@+id/btnListMedications"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:text="LIST OF MEDICATIONS"
+            android:backgroundTint="@color/light_blue"
+            android:textColor="@android:color/black" />
+
+        <Button
+            android:id="@+id/btnAdherenceScoring"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:text="ADHERENCE SCORING"
+            android:backgroundTint="@color/light_blue"
+            android:textColor="@android:color/black" />
+
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="DELETE"
+            android:backgroundTint="@color/light_red"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+</RelativeLayout>

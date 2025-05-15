@@ -41,18 +41,23 @@ android {
 }
 
 dependencies {
+    // Core Android libraries
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
 
     // Firebase
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-firestore-ktx")
 
-    // Credentials
+    // Database
+    implementation("com.google.firebase:firebase-database:20.3.0")
+
+    // Android Credentials
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.googleid)
@@ -66,23 +71,23 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-service:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-process:2.7.0")
 
     // WorkManager
     implementation("androidx.work:work-runtime-ktx:2.9.0")
 
-    // Alarm & Notifications (NEW)
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.work:work-runtime-ktx:2.9.0")
-    implementation("androidx.lifecycle:lifecycle-service:2.7.0") // For lifecycle-aware services
-
-    // AlarmManager compatibility
-    implementation("androidx.appcompat:appcompat:1.6.1")
-
-    // For exact alarms (Android 12+)
-    implementation("androidx.core:core:1.12.0")
+    // Optional: Glide for image loading (recommended for patient profile images)
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    kapt("com.github.bumptech.glide:compiler:4.16.0")
 
     // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // Retrofit and OkHttp dependencies
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
 }

@@ -6,24 +6,22 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Vibrator
 import android.util.Log
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationManagerCompat
 import com.app.medalertbox.R
 
 class FullScreenAlarmActivity : AppCompatActivity() {
 
     private lateinit var alarmId: String
-    private lateinit var vibrator: Vibrator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_full_screen_alarm)
 
-        // Full-screen mode
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
@@ -31,73 +29,51 @@ class FullScreenAlarmActivity : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
-        // Get alarm ID
         alarmId = intent.getStringExtra("alarm_id") ?: "default_id"
         Log.d("FullScreenAlarmActivity", "Alarm ID: $alarmId")
 
-        // Init vibrator
-        vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-
-        // Buttons
         val btnSnooze: Button = findViewById(R.id.btnSnooze)
         val btnStop: Button = findViewById(R.id.btnStop)
 
-        btnSnooze.setOnClickListener {
-            stopAlarmSound() // stop the ringing
-            snoozeAlarm(5)   // snooze for 5 minutes
-            finish()         // close the full-screen UI
-        }
-
-        btnStop.setOnClickListener {
-            Log.d("FullScreenAlarmActivity", "Stop pressed")
-            stopAlarmCompletely()
-            finish()
-        }
+        btnSnooze.setOnClickListener { performSnooze() }
+        btnStop.setOnClickListener { performStop() }
     }
 
     @SuppressLint("ScheduleExactAlarm")
-    private fun snoozeAlarm(minutes: Int) {
-        val snoozeTimeInMillis = System.currentTimeMillis() + (minutes * 60 * 1000)
+    private fun performSnooze() {
+        AlarmSoundPlayer.stop(this)
 
-        val snoozeIntent = Intent(this, AlarmReceiver::class.java).apply {
-            action = "SNOOZED_ALARM"
-            putExtra("alarm_id", alarmId)
-        }
+        NotificationManagerCompat.from(this).cancel(alarmId.hashCode())
 
-        val snoozePendingIntent = PendingIntent.getBroadcast(
-            this,
-            alarmId.hashCode(),
-            snoozeIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
+        val snoozeTime = System.currentTimeMillis() + 5 * 60 * 1000 // 5 minutes
+        AlarmHelper.setSnoozeAlarm(this, snoozeTime, alarmId)
 
-        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager.setExactAndAllowWhileIdle(
-            AlarmManager.RTC_WAKEUP,
-            snoozeTimeInMillis,
-            snoozePendingIntent
-        )
+        Toast.makeText(this, "Snoozed for 5 minutes", Toast.LENGTH_SHORT).show()
+        Log.d("FullScreenAlarmActivity", "Alarm snoozed for 5 minutes")
 
-        Toast.makeText(this, "Snoozed for $minutes minutes", Toast.LENGTH_SHORT).show()
-        Log.d("FullScreenAlarmActivity", "Snooze set for $minutes minutes.")
+        finish()
     }
 
+    private fun performStop() {
+        AlarmSoundPlayer.stop(this)
 
-    private fun stopAlarmSound() {
-        val serviceIntent = Intent(this, AlarmRingtoneService::class.java)
-        stopService(serviceIntent)
-        Log.d("FullScreenAlarmActivity", "Alarm sound stopped.")
+        NotificationManagerCompat.from(this).cancel(alarmId.hashCode())
+
+        cancelAlarm()
+
+        Toast.makeText(this, "Alarm stopped", Toast.LENGTH_SHORT).show()
+        Log.d("FullScreenAlarmActivity", "Alarm stopped")
+
+        finish()
     }
 
-    private fun stopAlarmCompletely() {
-        stopAlarmSound()
-
+    private fun cancelAlarm() {
         val cancelIntent = Intent(this, AlarmReceiver::class.java).apply {
             action = "STOP_ALARM"
             putExtra("alarm_id", alarmId)
         }
 
-        val cancelPendingIntent = PendingIntent.getBroadcast(
+        val pendingIntent = PendingIntent.getBroadcast(
             this,
             alarmId.hashCode(),
             cancelIntent,
@@ -105,9 +81,10 @@ class FullScreenAlarmActivity : AppCompatActivity() {
         )
 
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager.cancel(cancelPendingIntent)
+        alarmManager.cancel(pendingIntent)
 
-        Toast.makeText(this, "Alarm stopped", Toast.LENGTH_SHORT).show()
-        Log.d("FullScreenAlarmActivity", "Alarm stopped and pending intents canceled.")
+        sendBroadcast(cancelIntent)
+
+        Log.d("FullScreenAlarmActivity", "Canceled alarm $alarmId from AlarmManager")
     }
 }

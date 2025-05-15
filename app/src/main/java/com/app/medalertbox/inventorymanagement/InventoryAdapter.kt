@@ -9,9 +9,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.app.medalertbox.R
+import java.text.SimpleDateFormat
+import java.util.*
 
-class InventoryAdapter(private val onUpdate: (Inventory) -> Unit, private val onDelete: (Inventory) -> Unit) :
-    ListAdapter<Inventory, InventoryAdapter.InventoryViewHolder>(InventoryDiffCallback()) {
+class InventoryAdapter(
+    private val onUpdate: (Inventory) -> Unit,
+    private val onDelete: (Inventory) -> Unit
+
+) : ListAdapter<Inventory, InventoryAdapter.InventoryViewHolder>(InventoryDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InventoryViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_inventory, parent, false)
@@ -29,10 +34,23 @@ class InventoryAdapter(private val onUpdate: (Inventory) -> Unit, private val on
         private val btnIncrease: Button = itemView.findViewById(R.id.btnIncreaseStock)
         private val btnDecrease: Button = itemView.findViewById(R.id.btnDecreaseStock)
         private val btnDelete: Button = itemView.findViewById(R.id.btnDelete)
+        private val txtExpiration: TextView = itemView.findViewById(R.id.txtExpiration)
+        private val editgrams: TextView = itemView.findViewById(R.id.editGrams)
 
         fun bind(inventory: Inventory, onUpdate: (Inventory) -> Unit, onDelete: (Inventory) -> Unit) {
             txtName.text = inventory.name
             txtStock.text = "Stock: ${inventory.stockQuantity}"
+
+            // Format expiration date from Long to readable date
+            val formattedDate = try {
+                val displayFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+                displayFormat.format(Date(inventory.expirationDate))
+            } catch (e: Exception) {
+                inventory.expirationDate.toString() // fallback
+            }
+            txtExpiration.text = "Expiration: $formattedDate"
+
+            editgrams.text = "Grams: ${inventory.grams}"
 
             btnIncrease.setOnClickListener {
                 val updatedInventory = inventory.copy(stockQuantity = inventory.stockQuantity + 1)
@@ -62,4 +80,3 @@ class InventoryDiffCallback : DiffUtil.ItemCallback<Inventory>() {
         return oldItem == newItem
     }
 }
-

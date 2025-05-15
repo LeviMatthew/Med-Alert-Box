@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/txtMedicationName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Medication Name"
+            android:inputType="text" />
+
+        <Spinner
+            android:id="@+id/spinnerForm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" />
+
+        <EditText
+            android:id="@+id/editGrams"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Grams"
+            android:inputType="numberDecimal"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/txtExpiration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Expiration Date"
+            android:padding="10dp"
+            android:background="@color/blue"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="8dp"
+            android:gravity="center" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageButton
+                android:id="@+id/btnDecreaseStock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="Decrease Stock"
+                android:src="@drawable/ic_remove"
+                android:background="@null" />
+
+            <TextView
+                android:id="@+id/txtStockLevel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:text="Stock: 1"
+                android:textSize="18sp" />
+
+            <ImageButton
+                android:id="@+id/btnIncreaseStock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="Increase Stock"
+                android:src="@drawable/ic_add"
+                android:background="@null" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/patientInfoScroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp"
+    android:fillViewport="true"
+    android:background="@drawable/medalertboxbacground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <!-- Patient Profile Image -->
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgProfile"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginBottom="16dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/circle_background"
+            android:background="@android:color/darker_gray"
+            app:shapeAppearanceOverlay="@style/CircleImageShape"
+            android:contentDescription="Patient Profile" />
+
+        <!-- Full Name -->
+        <TextView
+            android:id="@+id/txtFullName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Full Name"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#222222"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Info Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/medalertboxbacground">
+
+            <TextView
+                android:id="@+id/txtPatientNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Patient #: 0001"
+                android:textSize="22sp"
+                android:textColor="#444444"
+                android:layout_marginBottom="20dp" />
+
+            <TextView
+                android:id="@+id/txtAge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Age: 70"
+                android:textSize="22sp"
+                android:textColor="#444444"
+                android:layout_marginBottom="20dp" />
+
+            <TextView
+                android:id="@+id/txtHealthCondition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Health Condition: Hypertension"
+                android:textSize="22sp"
+                android:textColor="#444444"
+                android:layout_marginBottom="12dp" />
+
+            <TextView
+                android:id="@+id/txtAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Address: 123 Wellness Street"
+                android:textSize="22sp"
+                android:textColor="#444444"
+                android:layout_marginBottom="20dp" />
+
+            <TextView
+                android:id="@+id/txtRelativeName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Relative: John Doe"
+                android:textSize="22sp"
+                android:textColor="#444444"
+                android:layout_marginBottom="20dp" />
+
+            <TextView
+                android:id="@+id/txtRelativeContact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Relative Contact: +1234567890"
+                android:textSize="22sp"
+                android:textColor="#444444"
+                android:layout_marginBottom="20dp" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

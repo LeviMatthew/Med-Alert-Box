@@ -6,7 +6,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient"
+    android:background="@drawable/medalertboxbacground"
     tools:context=".SettingsActivity">
 
     <!-- Title -->
@@ -121,27 +121,28 @@
                 android:layout_marginBottom="20dp" />
 
             <!-- Change Password Row -->
-            <LinearLayout
-                android:id="@+id/btnChangePassword"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:paddingVertical="12dp"
-                android:paddingHorizontal="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?attr/selectableItemBackground">
-
-                <TextView
-                    android:text="Change Password"
-                    android:textSize="18sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/black" />
-            </LinearLayout>
 
             <!-- Privacy Preferences Row -->
+            <LinearLayout
+                android:id="@+id/btnChangePassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Change Password"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/btnPrivacySettings"
                 android:orientation="horizontal"
@@ -155,7 +156,7 @@
                 android:background="?attr/selectableItemBackground">
 
                 <TextView
-                    android:text="Privacy Preferences"
+                    android:text="Manage Account and Privacy Preferences"
                     android:textSize="18sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

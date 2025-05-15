@@ -1,16 +1,20 @@
 package com.app.medalertbox.alarmandnotifications
 
+
 import android.app.Application
 import android.util.Log
 import androidx.room.Room
+
 
 class AlarmApplication : Application() {
     companion object {
         private const val TAG = "AlarmApplication"
         private const val DATABASE_NAME = "alarm_database"
 
+
         @Volatile
         private var INSTANCE: AlarmDatabase? = null
+
 
         fun getDatabase(application: Application): AlarmDatabase {
             return INSTANCE ?: synchronized(this) {
@@ -26,9 +30,11 @@ class AlarmApplication : Application() {
         }
     }
 
+
     val database: AlarmDatabase by lazy {
         getDatabase(this)
     }
+
 
     override fun onCreate() {
         super.onCreate()

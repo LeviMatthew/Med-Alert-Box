@@ -46,6 +46,10 @@ class CaregiverDashboardActivity : AppCompatActivity() {
             startActivity(Intent(this, HelpSupportActivity::class.java))
         }
 
+        binding.btnPatientList.setOnClickListener {
+            startActivity(Intent(this, PatientListActivity::class.java))
+        }
+
     }
 }
 

@@ -1,0 +1,8 @@
+<resources>
+    <array name="reminder_types">
+        <item>Once</item>
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+    </array>
+</resources>

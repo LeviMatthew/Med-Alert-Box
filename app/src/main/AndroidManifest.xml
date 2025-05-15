@@ -2,17 +2,23 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.app.medalertbox">
-
     <!-- Permissions -->
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.SET_ALARM" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+
+    <uses-permission-sdk-23 android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission-sdk-23 android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:name=".alarmandnotifications.AlarmApplication"
@@ -25,62 +31,101 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MedAlertBox"
         tools:targetApi="31">
-
-        <!-- Authentication -->
-        <activity android:name=".LogInActivity" android:exported="true">
+        <activity
+            android:name=".ListOfMedicationsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PersonalInformationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PatientProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PatientListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PatientInformationActivity"
+            android:exported="false" /> <!-- Authentication Activities -->
+        <activity
+            android:name=".LogInActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SignUpActivity" android:exported="false" />
-        <activity android:name=".ForgotPasswordActivity" android:exported="false" />
-
-        <!-- Dashboards -->
-        <activity android:name=".MainActivity" android:exported="false" />
-        <activity android:name=".AdminDashboardActivity" android:exported="false" />
-        <activity android:name=".CaregiverDashboardActivity" android:exported="false" />
-        <activity android:name=".SeniorDashboardActivity" android:exported="false" />
-
-        <!-- Feature Activities -->
-        <activity android:name=".AlarmNotificationsActivity" android:exported="false" />
-        <activity android:name=".MedicationScheduleActivity" android:exported="false" />
-        <activity android:name=".UserProfileindividual" android:exported="false" />
-        <activity android:name=".UserProfilesActivity" android:exported="false" />
-        <activity android:name=".SettingsActivity" android:exported="false" />
-        <activity android:name=".HelpSupportActivity" android:exported="false" />
-        <activity android:name=".ReportAnalyticsActivity" android:exported="false" />
-        <activity android:name=".GPSTrackingGeofencing" android:exported="false" />
-        <activity android:name=".InventoryManagementActivity" android:exported="false" />
-        <activity android:name=".settings.PrivacySettingsActivity" android:exported="false" />
-        <activity android:name=".settings.ChangePasswordActivity" android:exported="false" />
-
-        <!-- Full-Screen Alarm Overlay -->
+        <activity
+            android:name=".SignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ForgotPasswordActivity"
+            android:exported="false" /> <!-- Dashboards -->
+        <activity
+            android:name=".AdminDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CaregiverDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SeniorDashboardActivity"
+            android:exported="false" /> <!-- Main Feature Activities -->
+        <activity
+            android:name=".MedicationScheduleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserProfileindividual"
+            android:exported="false" />
+        <activity
+            android:name=".UserProfilesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HelpSupportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ReportAnalyticsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GPSTrackingGeofencing"
+            android:exported="false" />
+        <activity
+            android:name=".InventoryManagementActivity"
+            android:exported="false" /> <!-- Settings Sub-Activities -->
+        <activity
+            android:name=".settings.ChangePasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".settings.PrivacySettingsActivity"
+            android:exported="false" /> <!-- Alarm and Notification Activities -->
+        <activity
+            android:name=".AlarmNotificationsActivity"
+            android:exported="false" />
         <activity
             android:name=".alarmandnotifications.FullScreenAlarmActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:showOnLockScreen="true"
-            android:turnScreenOn="true"
-            android:excludeFromRecents="true"
             android:taskAffinity=""
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:exported="true" />
-
-        <!-- Alarm Receiver -->
+            android:turnScreenOn="true"
+            android:windowSoftInputMode="stateAlwaysHidden" /> <!-- Alarm Receivers -->
         <receiver
             android:name=".alarmandnotifications.AlarmReceiver"
             android:enabled="true"
-            android:exported="false">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.ALARM_ALERT" />
                 <action android:name="com.app.medalertbox.SNOOZED_ALARM" />
                 <action android:name="ALARM_TRIGGER" />
                 <action android:name="STOP_ALARM" />
+                <action android:name="com.app.medalertbox.ACTION_STOP_ALARM" />
+                <action android:name="com.app.medalertbox.ACTION_SNOOZE_ALARM" />
             </intent-filter>
         </receiver>
-
-        <!-- Boot Receiver -->
         <receiver
             android:name=".alarmandnotifications.BootReceiver"
             android:enabled="true"
@@ -88,9 +133,17 @@
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
+        </receiver> <!-- Services -->
+        <receiver
+            android:name=".alarmandnotifications.AlarmActionReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.app.medalertbox.ACTION_STOP_ALARM" />
+                <action android:name="com.app.medalertbox.ACTION_SNOOZE_ALARM" />
+            </intent-filter>
         </receiver>
 
-        <!-- Services -->
         <service
             android:name=".alarmandnotifications.AlarmService"
             android:exported="false"
@@ -98,16 +151,13 @@
             tools:ignore="ForegroundServicePermission" />
         <service
             android:name=".alarmandnotifications.AlarmRingtoneService"
-            android:exported="false" />
-
-        <!-- Firebase Defaults -->
+            android:exported="false" /> <!-- Firebase Notification Metadata -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@mipmap/ic_launcher" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/gray" />
-
     </application>
 
 </manifest>

@@ -38,7 +38,7 @@ class SeniorDashboardActivity : AppCompatActivity() {
 
         // Navigate to User Profiles
         binding.btnUserProfile.setOnClickListener {
-            startActivity(Intent(this, UserProfilesActivity::class.java))
+            startActivity(Intent(this, UserProfileindividual::class.java))
         }
 
         binding.btnHelp.setOnClickListener {

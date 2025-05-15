@@ -1,9 +1,11 @@
 package com.app.medalertbox.alarmandnotifications
 
+
 // AlarmNotification.kt
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.*
+
 
 @Entity(tableName = "alarm_notifications")
 data class AlarmNotification(

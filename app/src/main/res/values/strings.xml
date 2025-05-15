@@ -1,8 +1,15 @@
 <resources>
     <string name="app_name">Med Alert Box</string>
-    <string name="home">home\n</string>
+    <string name="home">home</string>
     <string name="alarm_notifications">alarm_notifications</string>
     <string name="enter_medication_name">enter_medication_name</string>
     <string name="add_alarm">add_alarm</string>
     <string name="no_alarms_set">no_alarms_set</string>
+
+    <string-array name="unit_types">
+        <item>Grams</item>
+        <item>Tablets</item>
+        <item>Capsules</item>
+    </string-array>
+
 </resources>

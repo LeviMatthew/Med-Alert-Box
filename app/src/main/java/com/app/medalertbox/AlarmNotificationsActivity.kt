@@ -1,5 +1,6 @@
 package com.app.medalertbox
 
+
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
@@ -15,10 +16,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 class AlarmNotificationsActivity : AppCompatActivity(), AlarmAdapter.OnAlarmClickListener {
     private lateinit var binding: ActivityAlarmNotificationsBinding
     private lateinit var alarmAdapter: AlarmAdapter
-    private lateinit var alarmManagerHelper: AlarmManager
+    private lateinit var alarmManagerHelper: AlarmScheduler
     private val viewModel: AlarmViewModel by viewModels {
         AlarmViewModelFactory(
             AlarmRepository(
@@ -30,17 +32,21 @@ class AlarmNotificationsActivity : AppCompatActivity(), AlarmAdapter.OnAlarmClic
     private lateinit var db: FirebaseFirestore
     private var userType: String = "unknown"
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAlarmNotificationsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         firebaseAuth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
-        alarmManagerHelper = AlarmManager(this)
+        alarmManagerHelper = AlarmScheduler(this)
+
 
         userType = intent.getStringExtra("userType")?.lowercase() ?: "unknown"
         Log.d("AlarmNotifications", "Received userType: $userType")
+
 
         if (userType == "unknown") {
             fetchUserRoleFromFirebase()
@@ -48,8 +54,10 @@ class AlarmNotificationsActivity : AppCompatActivity(), AlarmAdapter.OnAlarmClic
             checkUserAuthorization()
         }
 
+
         binding.homeButton.setOnClickListener { navigateToDashboard() }
     }
+
 
     private fun fetchUserRoleFromFirebase() {
         val user = firebaseAuth.currentUser
@@ -58,6 +66,7 @@ class AlarmNotificationsActivity : AppCompatActivity(), AlarmAdapter.OnAlarmClic
             navigateToLogin()
             return
         }
+
 
         db.collection("users").document(user.uid).get()
             .addOnSuccessListener { document ->
@@ -77,6 +86,7 @@ class AlarmNotificationsActivity : AppCompatActivity(), AlarmAdapter.OnAlarmClic
             }
     }
 
+
     private fun checkUserAuthorization() {
         if (userType !in listOf("admin", "caregiver")) {
             showToast("Unauthorized access!")
@@ -87,6 +97,7 @@ class AlarmNotificationsActivity : AppCompatActivity(), AlarmAdapter.OnAlarmClic
             setupClickListeners()
         }
     }
+
 
     private fun navigateToDashboard() {
         val targetActivity = when (userType) {
@@ -99,6 +110,7 @@ class AlarmNotificationsActivity : AppCompatActivity(), AlarmAdapter.OnAlarmClic
             }
         }
 
+
         startActivity(Intent(this, targetActivity).apply {
             putExtra("userType", userType)
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -106,10 +118,12 @@ class AlarmNotificationsActivity : AppCompatActivity(), AlarmAdapter.OnAlarmClic
         finish()
     }
 
+
     private fun navigateToLogin() {
         startActivity(Intent(this, LogInActivity::class.java))
         finish()
     }
+
 
     private fun setupRecyclerView() {
         alarmAdapter = AlarmAdapter(this)
@@ -118,6 +132,7 @@ class AlarmNotificationsActivity : AppCompatActivity(), AlarmAdapter.OnAlarmClic
             adapter = alarmAdapter
         }
     }
+
 
     private fun observeAlarms() {
         viewModel.allAlarms.observe(this) { alarms ->
@@ -129,6 +144,7 @@ class AlarmNotificationsActivity : AppCompatActivity(), AlarmAdapter.OnAlarmClic
         }
     }
 
+
     private fun setupClickListeners() {
         binding.addAlarmButton.setOnClickListener {
             val medicationName = binding.medicationNameEditText.text.toString().trim()
@@ -137,10 +153,12 @@ class AlarmNotificationsActivity : AppCompatActivity(), AlarmAdapter.OnAlarmClic
                 return@setOnClickListener
             }
 
+
             val calendar = Calendar.getInstance()
             TimePickerDialog(this, { _, hourOfDay, minute ->
                 val time = formatTime(hourOfDay, minute)
                 val date = getCurrentDate()
+
 
                 val alarm = AlarmNotification(
                     medicationName = medicationName,
@@ -148,14 +166,17 @@ class AlarmNotificationsActivity : AppCompatActivity(), AlarmAdapter.OnAlarmClic
                     date = date
                 )
 
+
                 viewModel.insert(alarm)
                 alarmManagerHelper.scheduleAlarm(alarm)
 
-                binding.medicationNameEditText.text.clear()
+
+                binding.medicationNameEditText.text?.clear()
                 showToast("Alarm set for $time on $date")
             }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false).show()
         }
     }
+
 
     private fun formatTime(hour: Int, minute: Int): String {
         return SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Calendar.getInstance().apply {
@@ -164,13 +185,16 @@ class AlarmNotificationsActivity : AppCompatActivity(), AlarmAdapter.OnAlarmClic
         }.time)
     }
 
+
     private fun getCurrentDate(): String {
         return SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(Date())
     }
 
+
     override fun onAlarmToggle(alarm: AlarmNotification, isActive: Boolean) {
         val updatedAlarm = alarm.copy(isActive = isActive)
         viewModel.update(updatedAlarm)
+
 
         if (isActive) {
             alarmManagerHelper.scheduleAlarm(updatedAlarm)
@@ -179,10 +203,12 @@ class AlarmNotificationsActivity : AppCompatActivity(), AlarmAdapter.OnAlarmClic
         }
     }
 
+
     override fun onAlarmDelete(alarm: AlarmNotification) {
         viewModel.delete(alarm)
         alarmManagerHelper.cancelAlarm(alarm.id)
     }
+
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

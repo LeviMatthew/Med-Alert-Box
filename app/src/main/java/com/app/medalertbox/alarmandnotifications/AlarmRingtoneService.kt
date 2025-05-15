@@ -4,8 +4,8 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
+import android.content.Context
 import android.content.Intent
-import android.media.MediaPlayer
 import android.os.Build
 import android.os.Handler
 import android.os.IBinder
@@ -16,56 +16,73 @@ import com.app.medalertbox.R
 class AlarmRingtoneService : Service() {
 
     private val handler = Handler()
+    private val channelId = "ALARM_RINGTONE_SERVICE"
+    private val notificationId = 2
 
     override fun onCreate() {
         super.onCreate()
-        startForegroundService()
-        startAlarm()
+        Log.d("AlarmRingtoneService", "Service created")
+        createNotificationChannel()
+        startForegroundServiceWithNotification()
+        startAlarmPlayback()
     }
 
-    private fun startForegroundService() {
-        val channelId = "ALARM_RINGTONE_SERVICE"
+    private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 channelId,
                 "Alarm Sound",
                 NotificationManager.IMPORTANCE_HIGH
-            )
+            ).apply {
+                description = "Plays alarm sound in foreground"
+                enableLights(true)
+                enableVibration(true)
+            }
+
             val manager = getSystemService(NotificationManager::class.java)
-            manager.createNotificationChannel(channel)
+            manager?.createNotificationChannel(channel)
         }
-
-        val notification: Notification = NotificationCompat.Builder(this, channelId)
-            .setContentTitle("Alarm Playing")
-            .setContentText("Alarm will stop in 3 minutes")
-            .setSmallIcon(R.drawable.ic_alarm)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setAutoCancel(true) // Auto cancel when alarm stops
-            .build()
-
-        startForeground(2, notification)
     }
 
-    private fun startAlarm() {
-        AlarmSoundPlayer.start(this) // Use helper class for alarm logic
+    private fun startForegroundServiceWithNotification() {
+        val notification: Notification = NotificationCompat.Builder(this, channelId)
+            .setContentTitle("Alarm Playing")
+            .setContentText("Tap stop or snooze to turn off alarm")
+            .setSmallIcon(R.drawable.ic_alarm)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setCategory(NotificationCompat.CATEGORY_ALARM)
+            .setOngoing(true)
+            .build()
 
-        Log.d("AlarmRingtoneService", "Alarm sound started. Will stop in 3 minutes.")
+        startForeground(notificationId, notification)
+    }
 
-        // Stop alarm automatically after 3 minutes
+    private fun startAlarmPlayback() {
+        AlarmSoundPlayer.play(this)
+        Log.d("AlarmRingtoneService", "Alarm sound started. Will auto-stop in 3 minutes.")
+
+        // Auto-stop after 3 minutes
         handler.postDelayed({
-            Log.d("AlarmRingtoneService", "3 minutes passed, stopping alarm.")
-            stopSelf() // Stops the service and the alarm
-        }, 180000) // 180,000 milliseconds = 3 minutes
+            Log.d("AlarmRingtoneService", "3 minutes passed, stopping service.")
+            stopSelf()
+        }, 3 * 60 * 1000)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        AlarmSoundPlayer.stop(this) // Stop sound and vibration
-        handler.removeCallbacksAndMessages(null) // Clear any scheduled stop
+        AlarmSoundPlayer.stop(this)
+        handler.removeCallbacksAndMessages(null)
         Log.d("AlarmRingtoneService", "Alarm stopped and service destroyed.")
     }
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
+    }
+
+    companion object {
+        fun stopSound(context: Context) {
+            AlarmSoundPlayer.stop(context)
+            Log.d("AlarmRingtoneService", "stopSound() called from companion object")
+        }
     }
 }
