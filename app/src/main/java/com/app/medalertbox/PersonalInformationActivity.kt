@@ -3,63 +3,72 @@ package com.app.medalertbox
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.app.medalertbox.databinding.ActivityPersonalInformationBinding
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 class PersonalInformationActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityPersonalInformationBinding
+    private lateinit var imageProfile: ImageView
+    private lateinit var textFullName: TextView
+    private lateinit var textPatientNumber: TextView
+    private lateinit var textAge: TextView
+    private lateinit var textHealthCondition: TextView
+    private lateinit var textAddress: TextView
+    private lateinit var textRelativeName: TextView
+    private lateinit var textRelativeContact: TextView
+
+    private var patientNumber: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityPersonalInformationBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_personal_information)
 
-        extractAndDisplayIntentData()
+        // Initialize views
+        imageProfile = findViewById(R.id.imgProfile)
+        textFullName = findViewById(R.id.tvFullName)
+        textPatientNumber = findViewById(R.id.tvPatientNumber)
+        textAge = findViewById(R.id.tvAge)
+        textHealthCondition = findViewById(R.id.tvHealthCondition)
 
-        binding.btnBack.setOnClickListener {
-            finish()
-        }
-    }
-
-    private fun extractAndDisplayIntentData() {
         try {
+            // Get all patient data from the intent
             val profileImageUri = intent.getStringExtra("profileImageUri")
-            val fullName = intent.getStringExtra("fullName")
-            val patientNumber = intent.getStringExtra("patientNumber")
-            val healthCondition = intent.getStringExtra("healthCondition")
-            val ageStr = intent.getStringExtra("age")?.trim()
+            val fullName = intent.getStringExtra("fullName") ?: "N/A"
+            patientNumber = intent.getStringExtra("patientNumber") ?: "N/A"
+            val healthCondition = intent.getStringExtra("healthCondition") ?: "N/A"
+            val age = intent.getStringExtra("age") ?: "N/A"
+            val address = intent.getStringExtra("address") ?: "N/A"
+            val relativeName = intent.getStringExtra("relativeName") ?: "N/A"
+            val relativeContact = intent.getStringExtra("relativeContact") ?: "N/A"
 
-            Log.d("PersonalInfoActivity", "Intent Data -> Name: $fullName, Age: $ageStr, Number: $patientNumber")
+            // Set text fields
+            textFullName.text = fullName
+            textPatientNumber.text = "Patient #: $patientNumber"
+            textAge.text = "Age: $age"
+            textHealthCondition.text = "Condition: $healthCondition"
+            textAddress.text = "Address: $address"
+            textRelativeName.text = "Relative: $relativeName"
+            textRelativeContact.text = "Contact: $relativeContact"
 
-            // Profile image
+            // Load profile image using Glide
             if (!profileImageUri.isNullOrEmpty()) {
-                try {
-                    binding.imgProfile.setImageURI(Uri.parse(profileImageUri))
-                } catch (e: Exception) {
-                    Log.e("PersonalInfoActivity", "Failed to load image URI", e)
-                    binding.imgProfile.setImageResource(R.drawable.icusers)
-                }
+                Glide.with(this)
+                    .load(Uri.parse(profileImageUri))
+                    .placeholder(R.drawable.icusers)
+                    .error(R.drawable.icusers)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(imageProfile)
             } else {
-                binding.imgProfile.setImageResource(R.drawable.icusers)
-            }
-
-            // Text fields
-            binding.tvFullName.text = fullName ?: "Name not available"
-            binding.tvPatientNumber.text = "Patient No: ${patientNumber ?: "N/A"}"
-            binding.tvHealthCondition.text = "Condition: ${healthCondition ?: "N/A"}"
-
-            if (!ageStr.isNullOrEmpty()) {
-                val age = ageStr.toIntOrNull()
-                binding.tvAge.text = if (age != null && age >= 0) "Age: $age" else "Age: Invalid"
-            } else {
-                binding.tvAge.text = "Age: Unknown"
+                imageProfile.setImageResource(R.drawable.icusers)
             }
 
         } catch (e: Exception) {
-            Log.e("PersonalInfoActivity", "Error extracting intent data", e)
-            Toast.makeText(this, "Failed to load patient data.", Toast.LENGTH_LONG).show()
+            Log.e("PersonalInformation", "Error loading patient information", e)
+            Toast.makeText(this, "Failed to load patient information.", Toast.LENGTH_LONG).show()
         }
     }
 }

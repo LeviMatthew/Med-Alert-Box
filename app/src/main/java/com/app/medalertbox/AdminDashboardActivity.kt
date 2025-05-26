@@ -19,46 +19,28 @@ class AdminDashboardActivity : AppCompatActivity() {
 
         firebaseAuth = FirebaseAuth.getInstance()
 
-        // Handle logout
-        binding.btnLogoutAdmin.setOnClickListener {
-            firebaseAuth.signOut()
-            startActivity(Intent(this, LogInActivity::class.java))
-            finish()
-        }
-
-        // Navigate to Medication Schedule
-        binding.btnMedication.setOnClickListener {
-            startActivity(Intent(this, MedicationScheduleActivity::class.java))
-        }
-
-        // Navigate to Alarm Notifications
-        binding.btnAlarm.setOnClickListener {
-            startActivity(Intent(this, AlarmNotificationsActivity::class.java))
-        }
-
-        // Navigate to Inventory Management
-        binding.btnInventory.setOnClickListener {
+        // Inventory Management
+        binding.medinventory.setOnClickListener {
             startActivity(Intent(this, InventoryManagementActivity::class.java))
         }
 
-        // Navigate to GPS Tracking & Geofencing
-        binding.btnGPS.setOnClickListener {
-            startActivity(Intent(this, GPSTrackingGeofencing::class.java))
+        // Alarm Notifications
+        binding.alarm.setOnClickListener {
+            startActivity(Intent(this, AlarmNotificationsActivity::class.java))
         }
 
-        // Navigate to User Profiles
-        binding.btnUser.setOnClickListener {
-            startActivity(Intent(this, UserProfilesActivity::class.java))
+        // Patient List
+        binding.patients.setOnClickListener {
+            startActivity(Intent(this, PatientListActivity::class.java))
         }
 
-        // Navigate to Reports & Analytics
-        binding.btnReports.setOnClickListener {
-            startActivity(Intent(this, ReportAnalyticsActivity::class.java))
-        }
-
-        // Navigate to Settings
-        binding.btnSettings.setOnClickListener {
-            startActivity(Intent(this, SettingsActivity::class.java))
+        // Logout
+        binding.btnLogout.setOnClickListener {
+            firebaseAuth.signOut()
+            val intent = Intent(this, LogInActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
         }
     }
 }

@@ -1,45 +1,35 @@
 package com.app.medalertbox.alarmandnotifications
 
 import android.content.Context
-import android.media.MediaPlayer
-import android.os.Build
-import android.os.Vibrator
-import android.os.VibrationEffect
+import android.media.Ringtone
+import android.media.RingtoneManager
+import android.net.Uri
 import android.util.Log
-import com.app.medalertbox.R
 
 object AlarmSoundPlayer {
-    private var mediaPlayer: MediaPlayer? = null
-    private var vibrator: Vibrator? = null
+    private var ringtone: Ringtone? = null
 
     fun play(context: Context) {
-        stop(context)
+        try {
+            val alarmUri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+                ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
-        mediaPlayer = MediaPlayer.create(context, R.raw.alarm_clock).apply {
-            isLooping = true
-            start()
+            ringtone = RingtoneManager.getRingtone(context, alarmUri)
+            ringtone?.play()
+
+            Log.d("AlarmSoundPlayer", "Alarm ringtone playing.")
+        } catch (e: Exception) {
+            Log.e("AlarmSoundPlayer", "Failed to play alarm sound", e)
         }
-
-        vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            vibrator?.vibrate(
-                VibrationEffect.createWaveform(longArrayOf(0, 500, 500, 500), 0)
-            )
-        } else {
-            vibrator?.vibrate(longArrayOf(0, 500, 500, 500), 0)
-        }
-
-        Log.d("AlarmSoundPlayer", "Alarm sound and vibration started")
     }
 
     fun stop(context: Context) {
-        mediaPlayer?.stop()
-        mediaPlayer?.release()
-        mediaPlayer = null
-
-        vibrator?.cancel()
-        vibrator = null
-
-        Log.d("AlarmSoundPlayer", "Alarm sound and vibration stopped")
+        try {
+            ringtone?.stop()
+            ringtone = null
+            Log.d("AlarmSoundPlayer", "Alarm ringtone stopped.")
+        } catch (e: Exception) {
+            Log.e("AlarmSoundPlayer", "Failed to stop alarm sound", e)
+        }
     }
 }

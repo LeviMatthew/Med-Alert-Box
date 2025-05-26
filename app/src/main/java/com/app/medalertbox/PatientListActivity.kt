@@ -48,11 +48,8 @@ class PatientListActivity : AppCompatActivity() {
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(imageView)
                         }
-                    } catch (e: SecurityException) {
-                        Log.e("PatientListActivity", "Image load failed - permission denied", e)
-                        Toast.makeText(this, "Failed to load image: Permission denied", Toast.LENGTH_LONG).show()
                     } catch (e: Exception) {
-                        Log.e("PatientListActivity", "Error loading image", e)
+                        Log.e("PatientListActivity", "Image load error", e)
                         Toast.makeText(this, "Error loading image", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -61,79 +58,73 @@ class PatientListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityPatientListBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        try {
-            binding = ActivityPatientListBinding.inflate(layoutInflater)
-            setContentView(binding.root)
+        viewModel = ViewModelProvider(this)[PatientViewModel::class.java]
+        setupRecyclerView()
+        setupObservers()
+        setupBackButtonForCaregiver()
 
-            viewModel = ViewModelProvider(this)[PatientViewModel::class.java]
+        binding.fabAddPatient.setOnClickListener { showAddPatientDialog() }
+    }
 
-            adapter = PatientAdapter(
-                onDelete = { patient -> viewModel.delete(patient) },
-                onImageBind = { uri, imageView ->
-                    try {
-                        if (!uri.isNullOrEmpty()) {
-                            Glide.with(imageView.context)
-                                .load(Uri.parse(uri))
-                                .placeholder(R.drawable.icusers)
-                                .error(R.drawable.icusers)
-                                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                .into(imageView)
-                        } else {
-                            imageView.setImageResource(R.drawable.icusers)
-                        }
-                    } catch (e: Exception) {
-                        Log.e("PatientListActivity", "Image bind failed", e)
+    private fun setupRecyclerView() {
+        adapter = PatientAdapter(
+            onDelete = {
+                viewModel.delete(it)
+                deletePatientFromFirestore(it.patientNumber)
+            },
+            onImageBind = { uri, imageView ->
+                try {
+                    if (!uri.isNullOrEmpty()) {
+                        Glide.with(imageView.context)
+                            .load(Uri.parse(uri))
+                            .placeholder(R.drawable.icusers)
+                            .error(R.drawable.icusers)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(imageView)
+                    } else {
                         imageView.setImageResource(R.drawable.icusers)
                     }
-                },
-                onUploadClick = { _, _ -> },
-                onItemClick = { patient ->
-                    val intent = Intent(this, PersonalInformationActivity::class.java).apply {
-                        putExtra("profileImageUri", patient.profileImageUri)
-                        putExtra("fullName", "${patient.firstName} ${patient.middleName} ${patient.lastName}".trim())
-                        putExtra("patientNumber", patient.patientNumber)
-                        putExtra("healthCondition", patient.healthCondition)
-                        putExtra("age", patient.age.toString()) // ✅ Pass age here
-                    }
-                    startActivity(intent)
+                } catch (e: Exception) {
+                    Log.e("PatientListActivity", "Image bind failed", e)
+                    imageView.setImageResource(R.drawable.icusers)
                 }
-            )
-
-            binding.recyclerViewPatients.layoutManager = LinearLayoutManager(this)
-            binding.recyclerViewPatients.adapter = adapter
-
-            viewModel.allPatients.observe(this) {
-                adapter.submitList(it)
+            },
+            onUploadClick = { _, _ -> },
+            onItemClick = { patient ->
+                val intent = Intent(this, ListOfMedicationsActivity::class.java).apply {
+                    putExtra("patientId", patient.id)
+                    putExtra("patientNumber", patient.patientNumber)
+                    putExtra("patientName", "${patient.firstName} ${patient.lastName}")
+                }
+                startActivity(intent)
             }
+        )
+        binding.recyclerViewPatients.layoutManager = LinearLayoutManager(this)
+        binding.recyclerViewPatients.adapter = adapter
+    }
 
-            binding.fabAddPatient.setOnClickListener {
-                showAddPatientDialog()
-            }
-
-            setupBackButtonForCaregiver()
-
-        } catch (e: Exception) {
-            Log.e("PatientListActivity", "onCreate crash", e)
-            Toast.makeText(this, "An error occurred while loading patient data.", Toast.LENGTH_LONG).show()
-            finish()
+    private fun setupObservers() {
+        viewModel.allPatients.observe(this) { patientList ->
+            adapter.submitList(patientList)
         }
     }
 
     private fun setupBackButtonForCaregiver() {
-        val backButton = binding.btnBackToDashboard
         val currentUser = FirebaseAuth.getInstance().currentUser
+        val backButton = binding.btnBackToDashboard
         if (currentUser != null) {
             FirebaseFirestore.getInstance().collection("users")
                 .document(currentUser.uid)
                 .get()
-                .addOnSuccessListener { document ->
-                    userRole = document.getString("role")
+                .addOnSuccessListener { doc ->
+                    userRole = doc.getString("role")
                     if (userRole == "caregiver") {
                         backButton.visibility = View.VISIBLE
                         backButton.setOnClickListener {
-                            val intent = Intent(this, CaregiverDashboardActivity::class.java)
-                            startActivity(intent)
+                            startActivity(Intent(this, CaregiverDashboardActivity::class.java))
                             finish()
                         }
                     } else {
@@ -141,7 +132,7 @@ class PatientListActivity : AppCompatActivity() {
                     }
                 }
                 .addOnFailureListener {
-                    Log.e("PatientListActivity", "Failed to retrieve user role", it)
+                    Log.e("PatientListActivity", "Failed to fetch user role", it)
                 }
         }
     }
@@ -152,8 +143,7 @@ class PatientListActivity : AppCompatActivity() {
         val firstName = dialogView.findViewById<EditText>(R.id.editFirstName)
         val middleName = dialogView.findViewById<EditText>(R.id.editMiddleName)
         val lastName = dialogView.findViewById<EditText>(R.id.editLastName)
-        val number = dialogView.findViewById<EditText>(R.id.editPatientNumber)
-        val age = dialogView.findViewById<EditText>(R.id.editAge)
+        val ageEdit = dialogView.findViewById<EditText>(R.id.editAge)
         val healthCondition = dialogView.findViewById<EditText>(R.id.editHealthCondition)
         val address = dialogView.findViewById<EditText>(R.id.editAddress)
         val relativeName = dialogView.findViewById<EditText>(R.id.editRelativeName)
@@ -182,41 +172,46 @@ class PatientListActivity : AppCompatActivity() {
                 try {
                     val first = firstName.text.toString().trim()
                     val last = lastName.text.toString().trim()
-                    val patientNum = number.text.toString().trim()
+                    val ageStr = ageEdit.text.toString().trim()
 
-                    if (first.isEmpty() || last.isEmpty() || patientNum.isEmpty()) {
-                        Toast.makeText(this, "First name, last name, and patient number are required.", Toast.LENGTH_LONG).show()
+                    if (first.isEmpty() || last.isEmpty()) {
+                        Toast.makeText(this, "First and last name are required.", Toast.LENGTH_SHORT).show()
                         return@setOnClickListener
                     }
 
-                    val ageInput = age.text.toString().trim()
-                    val parsedAge = ageInput.toIntOrNull()
+                    val parsedAge = ageStr.toIntOrNull()
                     if (parsedAge == null || parsedAge < 0) {
-                        Toast.makeText(this, "Invalid age. Please enter a valid number.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Invalid age entered.", Toast.LENGTH_SHORT).show()
                         return@setOnClickListener
                     }
+
+                    val currentList = viewModel.allPatients.value ?: emptyList()
+                    val maxNumber = currentList.mapNotNull { it.patientNumber.toIntOrNull() }.maxOrNull() ?: 0
+                    val newPatientNum = String.format("%03d", maxNumber + 1)
 
                     val patient = Patient(
                         firstName = first,
                         middleName = middleName.text.toString().trim(),
                         lastName = last,
-                        patientNumber = patientNum,
                         age = parsedAge,
                         healthCondition = healthCondition.text.toString().trim(),
                         address = address.text.toString().trim(),
                         relativeName = relativeName.text.toString().trim(),
                         relativeContact = relativeContact.text.toString().trim(),
+                        patientNumber = newPatientNum,
                         profileImageUri = selectedImageUri?.toString() ?: ""
                     )
 
                     viewModel.insert(patient)
+                    savePatientToFirestore(patient)
+                    dialog.dismiss()
+
                     selectedImageUri = null
                     currentImageView = null
-                    dialog.dismiss()
 
                 } catch (e: Exception) {
                     Log.e("PatientListActivity", "Error adding patient", e)
-                    Toast.makeText(this, "Failed to add patient. Check all inputs.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Error adding patient.", Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -227,5 +222,34 @@ class PatientListActivity : AppCompatActivity() {
         }
 
         dialog.show()
+    }
+
+    private fun savePatientToFirestore(patient: Patient) {
+        val db = FirebaseFirestore.getInstance()
+        val user = FirebaseAuth.getInstance().currentUser
+        user?.let {
+            db.collection("patients")
+                .document(patient.patientNumber)
+                .set(patient)
+                .addOnSuccessListener {
+                    Log.d("PatientListActivity", "Saved patient to Firestore")
+                }
+                .addOnFailureListener { e ->
+                    Log.e("PatientListActivity", "Failed to save patient", e)
+                }
+        }
+    }
+
+    private fun deletePatientFromFirestore(patientNumber: String) {
+        FirebaseFirestore.getInstance()
+            .collection("patients")
+            .document(patientNumber)
+            .delete()
+            .addOnSuccessListener {
+                Log.d("PatientListActivity", "Deleted patient from Firestore")
+            }
+            .addOnFailureListener {
+                Log.e("PatientListActivity", "Failed to delete patient from Firestore", it)
+            }
     }
 }

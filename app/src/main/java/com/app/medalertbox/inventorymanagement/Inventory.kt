@@ -14,8 +14,9 @@ data class Inventory(
     val unitType: String,
     val reorderLevel: Int,
     val grams: Int,
-    val quantity: Int
-) {
-constructor() : this(0, "", 0, 0L, "", 0, 0, 0) // Needed for Firestore deserialization
+    val quantity: Int,
+
+    ) {
+    constructor() : this(0, "", 0, 0L, "", 0, 0, 0) // Needed for Firestore deserialization
 }
 

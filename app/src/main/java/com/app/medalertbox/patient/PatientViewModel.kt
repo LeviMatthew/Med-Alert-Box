@@ -24,8 +24,15 @@ class PatientViewModel(application: Application) : AndroidViewModel(application)
     fun insert(patient: Patient) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                repository.insertPatient(patient)  // Save to Room
-                uploadPatientToFirestore(patient)  // Upload to Firestore
+                val patientNumber = if (patient.patientNumber.isBlank()) {
+                    repository.getNextPatientNumber()
+                } else {
+                    patient.patientNumber
+                }
+
+                val updatedPatient = patient.copy(patientNumber = patientNumber)
+                repository.insertPatient(updatedPatient) // Save to Room
+                uploadPatientToFirestore(updatedPatient) // Upload to Firestore
             } catch (e: Exception) {
                 Log.e("PatientViewModel", "Failed to insert patient", e)
             }
@@ -35,8 +42,8 @@ class PatientViewModel(application: Application) : AndroidViewModel(application)
     fun delete(patient: Patient) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                repository.deletePatient(patient)  // Delete from Room
-                deletePatientFromFirestore(patient)  // Delete from Firestore
+                repository.deletePatient(patient) // Delete from Room
+                deletePatientFromFirestore(patient) // Delete from Firestore
             } catch (e: Exception) {
                 Log.e("PatientViewModel", "Failed to delete patient", e)
             }

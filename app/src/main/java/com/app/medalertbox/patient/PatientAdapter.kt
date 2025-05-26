@@ -27,7 +27,7 @@ class PatientAdapter(
         val patient = getItem(position)
         holder.bind(patient)
 
-        // Generic item click (if needed externally)
+        // Optional item click
         holder.itemView.setOnClickListener {
             onItemClick(patient)
         }
@@ -53,10 +53,11 @@ class PatientAdapter(
                 // Load image
                 onImageBind(patient.profileImageUri, imgProfile)
 
-                // Navigate to profile
+                // ✅ Navigate to PatientProfileActivity with patientId included
                 btnPatientInfo.setOnClickListener {
                     val context = view.context
                     val intent = Intent(context, PatientProfileActivity::class.java).apply {
+                        putExtra("patientId", patient.id) // ✅ Required for downstream activities
                         putExtra("firstName", patient.firstName)
                         putExtra("middleName", patient.middleName)
                         putExtra("lastName", patient.lastName)
@@ -71,12 +72,12 @@ class PatientAdapter(
                     context.startActivity(intent)
                 }
 
-                // Delete patient
+                // Delete action
                 btnDelete.setOnClickListener {
                     onDelete(patient)
                 }
 
-                // Upload/change image
+                // Image upload/change
                 imgProfile.setOnClickListener {
                     onUploadClick(patient, imgProfile)
                 }

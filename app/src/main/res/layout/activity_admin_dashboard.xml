@@ -1,233 +1,253 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:background="#E6FAF5">
 
-    <LinearLayout
+    <!-- Profile Icon (Top Left) -->
+    <ImageButton
+        android:id="@+id/btnProfileTopLeft"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="@drawable/circle_background"
+        android:src="@drawable/icusers"
+        android:contentDescription="Profile"
+        android:scaleType="centerInside"
+        android:layout_margin="18dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Scrollable Content -->
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:gravity="center"
-        android:background="@drawable/medalertboxbacground">
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/btnProfileTopLeft"
+        app:layout_constraintBottom_toTopOf="@id/fabRowLayout">
 
-        <!-- Admin Title -->
-        <TextView
-            android:id="@+id/tvAdminTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Admin Dashboard"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"
-            android:layout_marginTop="40dp"
-            android:gravity="center"
-            android:textAlignment="center"/>
-
-        <!-- Centered GridLayout -->
-        <GridLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:columnCount="2"
-            android:layout_marginTop="20dp"
-            android:padding="8dp"
-            android:rowCount="5"
-            android:layout_gravity="center">
+            android:orientation="vertical"
+            android:padding="24dp">
 
-            <!-- Medication Schedule -->
+            <!-- Stats Cards Row -->
             <LinearLayout
-                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <ImageButton
-                    android:id="@+id/btnMedication"
-                    android:layout_width="140dp"
-                    android:layout_height="140dp"
-                    android:src="@drawable/iconmedication"
-                    android:contentDescription="Medication Schedule"
-                    android:background="?attr/selectableItemBackground"
-                    android:scaleType="fitCenter"
-                    android:padding="10dp"
-                    android:layout_margin="12dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Medication Schedule"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/black"
-                    android:gravity="center"
-                    android:textAlignment="center"/>
+                android:weightSum="3"
+                android:layout_marginBottom="24dp">
+
+                <!-- Card 1 -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="120dp"
+                    android:layout_weight="1"
+                    android:layout_margin="8dp"
+                    app:cardCornerRadius="14dp"
+                    app:cardElevation="6dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:src="@drawable/patients" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="120"
+                            android:textStyle="bold"
+                            android:textSize="19sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Patients"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Card 2 -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="120dp"
+                    android:layout_weight="1"
+                    android:layout_margin="8dp"
+                    app:cardCornerRadius="14dp"
+                    app:cardElevation="6dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:src="@drawable/iconmedication" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="58"
+                            android:textStyle="bold"
+                            android:textSize="19sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Medicines"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Card 3 -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="120dp"
+                    android:layout_weight="1"
+                    android:layout_margin="8dp"
+                    app:cardCornerRadius="14dp"
+                    app:cardElevation="6dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:src="@drawable/ic_alarm" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="32"
+                            android:textStyle="bold"
+                            android:textSize="19sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Schedules"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
 
-            <!-- Alarm Notifications -->
-            <LinearLayout
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <ImageButton
-                    android:id="@+id/btnAlarm"
-                    android:layout_width="140dp"
-                    android:layout_height="140dp"
-                    android:src="@drawable/iconalarm"
-                    android:contentDescription="Alarm Notifications"
-                    android:background="?attr/selectableItemBackground"
-                    android:scaleType="fitCenter"
-                    android:padding="10dp"
-                    android:layout_margin="12dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Alarm Notifications"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/black"
-                    android:gravity="center"
-                    android:textAlignment="center"/>
-            </LinearLayout>
+            <!-- Patient List Header -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Patient List"
+                android:textStyle="bold"
+                android:textSize="19sp"
+                android:layout_marginTop="14dp"
+                android:layout_marginBottom="10dp" />
 
-            <!-- Inventory Management -->
-            <LinearLayout
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <ImageButton
-                    android:id="@+id/btnInventory"
-                    android:layout_width="140dp"
-                    android:layout_height="140dp"
-                    android:src="@drawable/icinventory"
-                    android:contentDescription="Inventory Management"
-                    android:background="?attr/selectableItemBackground"
-                    android:scaleType="fitCenter"
-                    android:padding="10dp"
-                    android:layout_margin="12dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Inventory Management"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/black"
-                    android:gravity="center"
-                    android:textAlignment="center"/>
-            </LinearLayout>
+            <!-- Patient Table -->
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="*">
 
-            <!-- GPS Tracking & Geofencing -->
-            <LinearLayout
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <ImageButton
-                    android:id="@+id/btnGPS"
-                    android:layout_width="140dp"
-                    android:layout_height="140dp"
-                    android:src="@drawable/icgps"
-                    android:contentDescription="GPS Tracking  Geofencing"
-                    android:background="?attr/selectableItemBackground"
-                    android:scaleType="fitCenter"
-                    android:padding="10dp"
-                    android:layout_margin="12dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="GPS  Geofencing"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/black"
-                    android:gravity="center"
-                    android:textAlignment="center"/>
-            </LinearLayout>
+                <TableRow android:paddingBottom="4dp">
+                    <TextView android:text="Name" android:textStyle="bold" android:textSize="15sp"/>
+                    <TextView android:text="Age" android:textStyle="bold" android:textSize="15sp"/>
+                    <TextView android:text="Gender" android:textStyle="bold" android:textSize="15sp"/>
+                    <TextView android:text="Last Visit" android:textStyle="bold" android:textSize="15sp"/>
+                </TableRow>
 
-            <!-- User Profiles -->
-            <LinearLayout
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <ImageButton
-                    android:id="@+id/btnUser"
-                    android:layout_width="140dp"
-                    android:layout_height="140dp"
-                    android:src="@drawable/icusers"
-                    android:contentDescription="User Profiles"
-                    android:background="?attr/selectableItemBackground"
-                    android:scaleType="fitCenter"
-                    android:padding="10dp"
-                    android:layout_margin="12dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="User Profiles"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/black"
-                    android:gravity="center"
-                    android:textAlignment="center"/>
-            </LinearLayout>
+                <TableRow android:paddingTop="6dp" android:paddingBottom="6dp">
+                    <TextView android:text="Jane Doe" android:textSize="14sp"/>
+                    <TextView android:text="45" android:textSize="14sp"/>
+                    <TextView android:text="Female" android:textSize="14sp"/>
+                    <TextView android:text="—" android:textSize="14sp"/>
+                </TableRow>
 
-            <!-- Reports & Analytics -->
-            <LinearLayout
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <ImageButton
-                    android:id="@+id/btnReports"
-                    android:layout_width="140dp"
-                    android:layout_height="140dp"
-                    android:src="@drawable/icreports"
-                    android:contentDescription="Reports Analytics"
-                    android:background="?attr/selectableItemBackground"
-                    android:scaleType="fitCenter"
-                    android:padding="10dp"
-                    android:layout_margin="12dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Reports Analytics"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/black"
-                    android:gravity="center"
-                    android:textAlignment="center"/>
-            </LinearLayout>
+                <TableRow android:paddingTop="6dp" android:paddingBottom="6dp">
+                    <TextView android:text="John Smith" android:textSize="14sp"/>
+                    <TextView android:text="57" android:textSize="14sp"/>
+                    <TextView android:text="Male" android:textSize="14sp"/>
+                    <TextView android:text="—" android:textSize="14sp"/>
+                </TableRow>
+            </TableLayout>
 
-            <!-- Settings -->
-            <LinearLayout
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <ImageButton
-                    android:id="@+id/btnSettings"
-                    android:layout_width="140dp"
-                    android:layout_height="140dp"
-                    android:src="@drawable/icsettings"
-                    android:contentDescription="Settings"
-                    android:background="?attr/selectableItemBackground"
-                    android:scaleType="fitCenter"
-                    android:padding="10dp"
-                    android:layout_margin="12dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Settings"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/black"
-                    android:gravity="center"
-                    android:textAlignment="center"/>
-            </LinearLayout>
-        </GridLayout>
+            <!-- Medicines Header -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:layout_marginBottom="10dp"
+                android:text="Medicines"
+                android:textSize="19sp"
+                android:textStyle="bold" />
 
-        <!-- Logout Button -->
-        <Button
-            android:id="@+id/btnLogoutAdmin"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:text="Log Out"
-            android:backgroundTint="@android:color/holo_red_dark"
-            android:textColor="@android:color/white"
-            android:layout_marginTop="30dp"
-            android:layout_gravity="center"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="8dp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom FAB Row -->
+    <LinearLayout
+        android:id="@+id/fabRowLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="14dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnLogout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageButton
+            android:id="@+id/medinventory"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="14dp"
+            android:background="@drawable/circle_background"
+            android:src="@drawable/iconmedication"
+            android:scaleType="centerInside"
+            android:contentDescription="Medication Inventory" />
+
+        <ImageButton
+            android:id="@+id/alarm"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="14dp"
+            android:background="@drawable/circle_background"
+            android:src="@drawable/ic_notif"
+            android:scaleType="centerInside"
+            android:contentDescription="Alarms" />
+
+        <ImageButton
+            android:id="@+id/patients"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="14dp"
+            android:background="@drawable/circle_background"
+            android:src="@drawable/patients"
+            android:scaleType="centerInside"
+            android:contentDescription="Patients" />
     </LinearLayout>
-</ScrollView>
+
+    <!-- Logout Button (Bottom) -->
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Logout"
+        android:textStyle="bold"
+        android:backgroundTint="@color/design_default_color_error"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

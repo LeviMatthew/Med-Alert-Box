@@ -1,52 +1,33 @@
 package com.app.medalertbox.alarmandnotifications
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.util.Log
+import android.content.*
+import android.widget.Toast
 import androidx.core.app.NotificationManagerCompat
 
 class AlarmActionReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-        val action = intent.action
-        val notificationId = intent.getIntExtra("notificationId", -1)
-        val alarmId = intent.getStringExtra("alarm_id") ?: "default_id"
+        val action = intent.action ?: return
+        val alarmId = intent.getIntExtra("alarm_id", -1)
+        val medicationName = intent.getStringExtra("medication_name") ?: "Medication"
 
-        Log.d("AlarmActionReceiver", "Received action: $action")
+        if (alarmId == -1) return
 
         when (action) {
             "STOP" -> {
-                Log.d("AlarmActionReceiver", "Stopping alarm")
-                context.stopService(Intent(context, AlarmRingtoneService::class.java)) // ← Important!
-                AlarmRingtoneService.stopSound(context)
-                NotificationManagerCompat.from(context).cancel(notificationId)
+                AlarmSoundPlayer.stop(context)
+                NotificationManagerCompat.from(context).cancel(alarmId)
+                AlarmScheduler(context).cancelAlarm(alarmId)
+                Toast.makeText(context, "Alarm stopped", Toast.LENGTH_SHORT).show()
             }
 
             "SNOOZE" -> {
-                Log.d("AlarmActionReceiver", "Snoozing alarm")
-                context.stopService(Intent(context, AlarmRingtoneService::class.java))
-                AlarmRingtoneService.stopSound(context)
-                NotificationManagerCompat.from(context).cancel(notificationId)
-
-                val snoozeMillis = System.currentTimeMillis() + 5 * 60 * 1000
-                AlarmHelper.setSnoozeAlarm(context, snoozeMillis, alarmId) // Ensure this exists!
+                AlarmSoundPlayer.stop(context)
+                NotificationManagerCompat.from(context).cancel(alarmId)
+                val snoozeTime = System.currentTimeMillis() + 5 * 60 * 1000
+                AlarmScheduler(context).scheduleSnooze(alarmId, medicationName, snoozeTime)
+                Toast.makeText(context, "Snoozed for 5 minutes", Toast.LENGTH_SHORT).show()
             }
         }
-    }
-
-    private fun stopAlarm(context: Context, notificationId: Int) {
-        Log.d("AlarmActionReceiver", "Stopping alarm")
-        AlarmRingtoneService.stopSound(context)
-        NotificationManagerCompat.from(context).cancel(notificationId)
-    }
-
-    private fun snoozeAlarm(context: Context, alarmId: String, notificationId: Int) {
-        Log.d("AlarmActionReceiver", "Snoozing alarm for 5 minutes")
-        AlarmRingtoneService.stopSound(context)
-        NotificationManagerCompat.from(context).cancel(notificationId)
-
-        val snoozeMillis = System.currentTimeMillis() + 5 * 60 * 1000
-        AlarmHelper.setSnoozeAlarm(context, snoozeMillis, alarmId)
     }
 }

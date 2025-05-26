@@ -18,12 +18,37 @@
             android:id="@+id/tvSeniorTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Senior Dashboard"
+            android:text="User Dashboard"
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="@android:color/black"
             android:layout_gravity="center"
             android:layout_marginTop="40dp"/>
+
+        <TextView
+            android:id="@+id/tvMedicineSchedule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Medicine Schedule"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"/>
+
+        <TextView
+            android:id="@+id/tvMedicationAdherence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Medication Adherence"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"/>
+
+
+
 
         <!-- GridLayout for ImageButtons (2 Columns) -->
         <GridLayout

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class PatientInformationActivity : AppCompatActivity() {
@@ -18,12 +19,13 @@ class PatientInformationActivity : AppCompatActivity() {
     private lateinit var txtAddress: TextView
     private lateinit var txtRelativeName: TextView
     private lateinit var txtRelativeContact: TextView
-    private lateinit var btnViewDetails: Button // Button to trigger PersonalInformationActivity
+    private lateinit var btnViewDetails: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_patient_information)
 
+        // Initialize views
         imgProfile = findViewById(R.id.imgProfile)
         txtFullName = findViewById(R.id.txtFullName)
         txtPatientNumber = findViewById(R.id.txtPatientNumber)
@@ -34,6 +36,7 @@ class PatientInformationActivity : AppCompatActivity() {
         txtRelativeContact = findViewById(R.id.txtRelativeContact)
 
         // Get data from intent
+        val patientId = intent.getStringExtra("patientId")  // 🔑 Add this line
         val firstName = intent.getStringExtra("firstName") ?: ""
         val middleName = intent.getStringExtra("middleName") ?: ""
         val lastName = intent.getStringExtra("lastName") ?: ""
@@ -45,10 +48,10 @@ class PatientInformationActivity : AppCompatActivity() {
         val relativeContact = intent.getStringExtra("relativeContact") ?: "N/A"
         val profileImageUri = intent.getStringExtra("profileImageUri")
 
-        // Build full name
+        // Full name construction
         val fullName = listOf(firstName, middleName, lastName).filter { it.isNotBlank() }.joinToString(" ")
 
-        // Set text views
+        // Set data to views
         txtFullName.text = fullName.ifBlank { "Name not available" }
         txtPatientNumber.text = "Patient #: $patientNumber"
         txtAge.text = "Age: $age"
@@ -57,7 +60,7 @@ class PatientInformationActivity : AppCompatActivity() {
         txtRelativeName.text = "Relative: $relativeName"
         txtRelativeContact.text = "Relative Contact: $relativeContact"
 
-        // Set image
+        // Set profile image
         profileImageUri?.let {
             try {
                 imgProfile.setImageURI(Uri.parse(it))
@@ -66,14 +69,20 @@ class PatientInformationActivity : AppCompatActivity() {
             }
         } ?: imgProfile.setImageResource(R.drawable.icusers)
 
-        // 🔁 Launch PersonalInformationActivity
+        // View more details
         btnViewDetails.setOnClickListener {
+            if (patientId.isNullOrBlank()) {
+                Toast.makeText(this, "Patient ID is missing!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             val intent = Intent(this, PersonalInformationActivity::class.java).apply {
                 putExtra("profileImageUri", profileImageUri)
                 putExtra("fullName", fullName)
                 putExtra("patientNumber", patientNumber)
                 putExtra("healthCondition", healthCondition)
                 putExtra("age", age)
+                putExtra("patientId", patientId) // 🔑 Pass patientId here
             }
             startActivity(intent)
         }

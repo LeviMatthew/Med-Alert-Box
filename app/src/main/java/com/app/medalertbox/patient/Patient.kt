@@ -11,7 +11,7 @@ data class Patient(
 
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,  // This is local DB ID; Firebase will have its own UID
-    
+
     var firstName: String = "",
     var middleName: String = "",
     var lastName: String = "",

@@ -4,124 +4,82 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.os.Build
-import android.provider.Settings
-import android.util.Log
-import java.text.SimpleDateFormat
 import java.util.*
 
 class AlarmScheduler(private val context: Context) {
 
-    private val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
     fun scheduleAlarm(alarm: AlarmNotification) {
-        val alarmTime = getAlarmTimeInMillis(alarm.date, alarm.time)
-
-        if (alarmTime <= System.currentTimeMillis()) {
-            Log.e("AlarmScheduler", "Cannot schedule an alarm for a past time!")
-            return
+        val intent = Intent(context, AlarmReceiver::class.java).apply {
+            putExtra("alarm_id", alarm.id.toString())
+            putExtra("medication_name", alarm.medicationName)
         }
 
-        // Ensure exact alarm permissions for Android 12+ (API 31+)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !alarmManager.canScheduleExactAlarms()) {
-            Log.e("AlarmScheduler", "Exact alarm permission required! Redirecting to settings...")
-            requestExactAlarmPermission()
-            return
-        }
-
-        // Schedule start alarm
-        val startIntent = Intent(context, AlarmReceiver::class.java).apply {
-            putExtra("medicationName", alarm.medicationName)
-            putExtra("notificationId", alarm.id)
-            putExtra("alarm_action", "START")
-        }
-
-        val startPendingIntent = PendingIntent.getBroadcast(
-            context, alarm.id, startIntent,
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            alarm.id,
+            intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
+        val calendar = Calendar.getInstance().apply {
+            val (hourStr, minutePart) = alarm.time.split(":")
+            val hour = hourStr.toInt()
+            val minute = minutePart.substring(0, 2).toInt()
+            val amPm = minutePart.substring(3).trim().uppercase(Locale.ROOT)
+
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+            set(Calendar.MINUTE, minute)
+
+            when {
+                amPm == "PM" && hour < 12 -> set(Calendar.HOUR_OF_DAY, hour + 12)
+                amPm == "AM" && hour == 12 -> set(Calendar.HOUR_OF_DAY, 0)
+                else -> set(Calendar.HOUR_OF_DAY, hour)
+            }
+
+            if (before(Calendar.getInstance())) {
+                add(Calendar.DATE, 1)
+            }
+        }
+
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
-            alarmTime,
-            startPendingIntent
+            calendar.timeInMillis,
+            pendingIntent
         )
-
-        // Automatically stop alarm after 3 minutes (180000 ms)
-        scheduleAutoStopAlarm(alarm.id, alarmTime + 180000)
-
-        Log.d("AlarmScheduler", "Alarm scheduled for ${alarm.date} at ${alarm.time}")
     }
 
-    fun scheduleSnoozedAlarm(alarmId: Int, delayMillis: Long) {
-        val snoozeTime = System.currentTimeMillis() + delayMillis
-
-        val snoozeIntent = Intent(context, AlarmReceiver::class.java).apply {
-            putExtra("notificationId", alarmId)
-            putExtra("alarm_action", "SNOOZE")
+    fun scheduleSnooze(alarmId: Int, medicationName: String, snoozeMillis: Long) {
+        val intent = Intent(context, AlarmReceiver::class.java).apply {
+            putExtra("alarm_id", alarmId.toString())
+            putExtra("medication_name", medicationName)
         }
 
-        val snoozePendingIntent = PendingIntent.getBroadcast(
-            context, alarmId + 2000, snoozeIntent,
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            alarmId + 1000,
+            intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
-            snoozeTime,
-            snoozePendingIntent
+            snoozeMillis,
+            pendingIntent
         )
-
-        Log.d("AlarmScheduler", "Snoozed alarm set for ${Date(snoozeTime)}")
-    }
-
-    fun scheduleAutoStopAlarm(alarmId: Int, stopTimeMillis: Long) {
-        val stopIntent = Intent(context, AlarmReceiver::class.java).apply {
-            putExtra("notificationId", alarmId)
-            putExtra("alarm_action", "STOP")
-        }
-
-        val stopPendingIntent = PendingIntent.getBroadcast(
-            context, alarmId + 1000, stopIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
-
-        alarmManager.setExactAndAllowWhileIdle(
-            AlarmManager.RTC_WAKEUP,
-            stopTimeMillis,
-            stopPendingIntent
-        )
-
-        Log.d("AlarmScheduler", "Auto-stop scheduled at ${Date(stopTimeMillis)}")
     }
 
     fun cancelAlarm(alarmId: Int) {
         val intent = Intent(context, AlarmReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(
-            context, alarmId, intent,
+            context,
+            alarmId,
+            intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
-
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmManager.cancel(pendingIntent)
-
-        Log.d("AlarmScheduler", "Alarm with ID $alarmId canceled")
-    }
-
-    private fun getAlarmTimeInMillis(date: String, time: String): Long {
-        return try {
-            val dateFormat = SimpleDateFormat("MM/dd/yyyy hh:mm a", Locale.getDefault())
-            dateFormat.parse("$date $time")?.time ?: System.currentTimeMillis()
-        } catch (e: Exception) {
-            Log.e("AlarmScheduler", "Error parsing date/time: ${e.message}")
-            System.currentTimeMillis()
-        }
-    }
-
-    private fun requestExactAlarmPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            context.startActivity(intent)
-        }
     }
 }
