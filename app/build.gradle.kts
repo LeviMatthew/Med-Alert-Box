@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
     id("kotlin-kapt")
+
 }
 
 android {
@@ -93,5 +94,6 @@ dependencies {
 
     //Geofencing GPS Tracking
     implementation ("com.google.android.gms:play-services-location:21.0.1")
+    implementation ("com.google.android.gms:play-services-maps:18.2.0")
 
 }

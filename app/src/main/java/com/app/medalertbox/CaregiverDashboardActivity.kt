@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.app.medalertbox.databinding.ActivityCaregiverDashboardBinding
+import com.app.medalertbox.gps.MapsActivity
 import com.google.firebase.auth.FirebaseAuth
 import kotlin.jvm.java
 
@@ -35,7 +36,7 @@ class CaregiverDashboardActivity : AppCompatActivity() {
         }
         // Navigate to GPS Tracking & Geofencing
         binding.btnGPS.setOnClickListener {
-            startActivity(Intent(this, GPSTrackingGeofencing::class.java))
+            startActivity(Intent(this, MapsActivity::class.java))
         }
         // Navigate to Reports & Analytics
         binding.btnReports.setOnClickListener {

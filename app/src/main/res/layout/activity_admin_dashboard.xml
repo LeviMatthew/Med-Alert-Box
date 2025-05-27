@@ -19,13 +19,27 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <!-- Title TextView -->
+    <TextView
+        android:id="@+id/adminDashboardTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Admin Dashboard"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        app:layout_constraintTop_toBottomOf="@id/btnProfileTopLeft"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"/>
+
     <!-- Scrollable Content -->
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
-        app:layout_constraintTop_toBottomOf="@id/btnProfileTopLeft"
+        app:layout_constraintTop_toBottomOf="@id/adminDashboardTitle"
         app:layout_constraintBottom_toTopOf="@id/fabRowLayout">
 
         <LinearLayout

@@ -28,12 +28,14 @@ class SeniorDashboardActivity : AppCompatActivity() {
 
         // Navigate to Medication Schedule
         binding.btnMedication.setOnClickListener {
-            startActivity(Intent(this, MedicationScheduleActivity::class.java))
+            startActivity(Intent(this, MedicationListActivity::class.java))
         }
 
-        // Navigate to Alarm Notifications
+        // Navigate to Alarm Notifications (pass 'senior' role)
         binding.btnAlarm.setOnClickListener {
-            startActivity(Intent(this, AlarmNotificationsActivity::class.java))
+            val intent = Intent(this, AlarmNotificationsActivity::class.java)
+            intent.putExtra("userType", "senior")
+            startActivity(intent)
         }
 
         // Navigate to User Profiles
@@ -41,9 +43,9 @@ class SeniorDashboardActivity : AppCompatActivity() {
             startActivity(Intent(this, UserProfileindividual::class.java))
         }
 
+        // Navigate to Help & Support
         binding.btnHelp.setOnClickListener {
             startActivity(Intent(this, HelpSupportActivity::class.java))
         }
-
     }
 }

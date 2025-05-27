@@ -17,9 +17,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 
-    <uses-permission-sdk-23 android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission-sdk-23 android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
     <application
         android:name=".alarmandnotifications.AlarmApplication"
         android:allowBackup="true"
@@ -31,8 +28,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MedAlertBox"
         tools:targetApi="31">
+
         <activity
-            android:name=".MedicationListActivity"
+            android:name=".gps.MapsActivity"
             android:exported="false" />
         <activity
             android:name=".LogInActivity"
@@ -42,13 +40,16 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity> <!-- Other Activities -->
+        <activity
+            android:name=".MedicationListActivity"
+            android:exported="false" />
         <activity
             android:name=".SignUpActivity"
             android:exported="false" />
         <activity
             android:name=".ForgotPasswordActivity"
-            android:exported="false" /> <!-- Dashboards -->
+            android:exported="false" />
         <activity
             android:name=".AdminDashboardActivity"
             android:exported="false" />
@@ -57,7 +58,7 @@
             android:exported="false" />
         <activity
             android:name=".SeniorDashboardActivity"
-            android:exported="false" /> <!-- Core Modules -->
+            android:exported="false" />
         <activity
             android:name=".MedicationScheduleActivity"
             android:exported="false" />
@@ -81,13 +82,13 @@
             android:exported="false" />
         <activity
             android:name=".InventoryManagementActivity"
-            android:exported="false" /> <!-- Settings Sub-Activities -->
+            android:exported="false" />
         <activity
             android:name=".settings.ChangePasswordActivity"
             android:exported="false" />
         <activity
             android:name=".settings.PrivacySettingsActivity"
-            android:exported="false" /> <!-- Patient Management -->
+            android:exported="false" />
         <activity
             android:name=".PatientListActivity"
             android:exported="false" />
@@ -99,13 +100,13 @@
             android:exported="false" />
         <activity
             android:name=".PersonalInformationActivity"
-            android:exported="false" /> <!-- Medication List -->
+            android:exported="false" />
         <activity
             android:name=".ListOfMedicationsActivity"
-            android:exported="false" /> <!-- Alarm and Notifications -->
+            android:exported="false" />
         <activity
             android:name=".AlarmNotificationsActivity"
-            android:exported="false" />
+            android:exported="false" /> <!-- Fullscreen Alarm -->
         <activity
             android:name=".alarmandnotifications.FullScreenAlarmActivity"
             android:excludeFromRecents="true"
@@ -115,7 +116,7 @@
             android:showOnLockScreen="true"
             android:taskAffinity=""
             android:turnScreenOn="true"
-            android:windowSoftInputMode="stateAlwaysHidden" /> <!-- Alarm Receivers -->
+            android:windowSoftInputMode="stateAlwaysHidden" /> <!-- Receivers -->
         <receiver
             android:name=".alarmandnotifications.AlarmReceiver"
             android:enabled="true"
@@ -129,20 +130,30 @@
                 <action android:name="com.app.medalertbox.ACTION_SNOOZE_ALARM" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".alarmandnotifications.AlarmActionReceiver" /> <!-- Geofence Receiver -->
+        <receiver
+            android:name=".alarmandnotifications.AlarmActionReceiver"
+            android:exported="true" /> <!-- Services -->
         <service
             android:name=".alarmandnotifications.AlarmService"
             android:exported="false"
             tools:ignore="ForegroundServiceType" />
         <service
             android:name=".alarmandnotifications.AlarmRingtoneService"
-            android:exported="false" /> <!-- Firebase Notifications -->
+            android:exported="false" /> <!-- Firebase and Google Maps -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@mipmap/ic_launcher" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/gray" />
+
+        <receiver
+            android:name=".gps.GeofenceBroadcastReceiver"
+            android:exported="true" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCXsiMI0QxdJfk7QVwxFWukVVPGCVfwvho" />
     </application>
 
 </manifest>
